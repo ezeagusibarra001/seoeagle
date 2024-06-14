@@ -22,7 +22,6 @@ export async function GET(request: NextRequest) {
     });
 
     const result = await model.generateContent(prompt);
-    console.log(result)
     const response = await result.response;
     const text = response.text();
 

@@ -36,7 +36,6 @@ export default function ProductDetail() {
           description: matchingDescription ? matchingDescription.description : ""
         };
       });
-      console.log(generatedContent)
       setGeneratedContent(generatedContent);
     } catch (error) {
       toast.error("Cannot fetch titles");

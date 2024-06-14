@@ -1,6 +1,7 @@
 "use client";
 import { CompleteProject } from "@/types/settings.types";
 import { getByColAndFilter } from "@/utils/firebase";
+import { usePathname, useRouter } from "next/navigation";
 import {
   createContext,
   Dispatch,
@@ -31,6 +32,8 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
   children,
   userId,
 }) => {
+  const router = useRouter()
+  const pathname = usePathname()
   const [projects, setProjects] = useState<CompleteProject[] | null>(null);
   const [project, setProject] = useState<CompleteProject | null>(null);
   const [loading, setLoading] = useState(true);
@@ -47,8 +50,14 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
   };
 
   useEffect(() => {
-    getProjects();
-  }, [project]);
+    if(userId) getProjects();
+  }, [project, userId]);
+
+  useEffect(() => {
+    if(!userId){
+      router.replace(process.env.NEXT_PUBLIC_BASE_URL + "/sign-in" || "")
+    }
+  },[userId, pathname])
 
   const contextValue: AppContextType = {
     userId,

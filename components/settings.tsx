@@ -39,6 +39,7 @@ export function ProjectsComponent({
                 whatCompanyDo: { value: string };
                 urlExample: { value: string };
                 titleExample: { value: string };
+                descExample: { value: string };
               };
               const settings = {
                 company: target.company.value,
@@ -46,6 +47,7 @@ export function ProjectsComponent({
                 whatCompanyDo: target.whatCompanyDo.value,
                 urlExample: target.urlExample.value,
                 titleExample: target.titleExample.value,
+                descExample: target.descExample.value,
               };
               onSubmit(settings);
             }}
@@ -105,6 +107,17 @@ export function ProjectsComponent({
                     id="titleExample"
                     required
                     name="titleExample"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="descExample">Description Example</Label>
+                  <Input
+                    defaultValue={project?.descExample}
+                    id="descExample"
+                    required
+                    name="descExample"
                   />
                 </div>
               </div>

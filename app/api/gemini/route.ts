@@ -12,9 +12,17 @@ export async function GET(request: NextRequest) {
     }
 
     // The Gemini 1.5 models are versatile and work with both text-only and multimodal prompts
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash",
+      generationConfig: {
+        temperature: 0.7, // Adjust the temperature value here
+        topP: 1,
+        topK: 1,
+      },
+    });
 
     const result = await model.generateContent(prompt);
+    console.log(result)
     const response = await result.response;
     const text = response.text();
 

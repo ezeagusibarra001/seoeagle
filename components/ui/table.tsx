@@ -9,7 +9,7 @@ interface TableType {
   cols: string[];
   data?: TableData[];
   noData?: string;
-  callBack?: (key: string) => void;
+  callBack?: React.ReactNode;
   filters?: React.ReactNode;
   add?: React.ReactNode;
 }
@@ -72,14 +72,7 @@ export default function Table({
                         </td>
                       ))}
                       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                        {callBack && (
-                          <button
-                            onClick={() => callBack(info.key)}
-                            className="text-violet underline hover:bg-violet hover:text-white rounded-sm p-2"
-                          >
-                            Más info
-                          </button>
-                        )}
+                        {callBack && callBack}
                       </td>
                     </tr>
                   ))}

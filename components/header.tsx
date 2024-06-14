@@ -30,7 +30,8 @@ export function Header() {
       </nav>
       <div className="flex items-center justify-end gap-4 sm:w-1/4">
         <SignedOut>
-          <SignInButton />
+          <Link href="/sign-in">Sign In</Link>
+          <Link href="/sign-up">Sign Up</Link>
         </SignedOut>
         <SignedIn>
           <UserButton />

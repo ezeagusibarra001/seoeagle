@@ -32,8 +32,8 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
   children,
   userId,
 }) => {
-  const router = useRouter()
-  const pathname = usePathname()
+  const router = useRouter();
+  const pathname = usePathname();
   const [projects, setProjects] = useState<CompleteProject[] | null>(null);
   const [project, setProject] = useState<CompleteProject | null>(null);
   const [loading, setLoading] = useState(true);
@@ -50,14 +50,15 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
   };
 
   useEffect(() => {
-    if(userId) getProjects();
+    if (userId) getProjects();
   }, [project, userId]);
 
   useEffect(() => {
-    if(!userId){
-      router.replace(process.env.NEXT_PUBLIC_BASE_URL + "/sign-in" || "")
+    console.log(pathname);
+    if (!userId && pathname !== "/sign-in" && pathname !== "/sign-up") {
+      router.replace(process.env.NEXT_PUBLIC_BASE_URL + "/sign-in" || "");
     }
-  },[userId, pathname])
+  }, [userId, pathname]);
 
   const contextValue: AppContextType = {
     userId,

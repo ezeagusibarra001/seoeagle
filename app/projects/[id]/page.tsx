@@ -22,18 +22,29 @@ export default function ProductDetail() {
         throw new Error("projectId not found");
       }
       const titles = getByColAndFilter("titles", "projectId", project.id);
-      const descriptions = getByColAndFilter("descriptions", "projectId", project.id);
-      const [titlesResponse, descriptionsResponse] = await Promise.all([titles, descriptions]);
-      
-      const generatedContent = titlesResponse.map(titleItem => {
-        const matchingDescription = descriptionsResponse.find(descItem => descItem.title === titleItem.title);
+      const descriptions = getByColAndFilter(
+        "descriptions",
+        "projectId",
+        project.id
+      );
+      const [titlesResponse, descriptionsResponse] = await Promise.all([
+        titles,
+        descriptions,
+      ]);
+
+      const generatedContent = titlesResponse.map((titleItem) => {
+        const matchingDescription = descriptionsResponse.find(
+          (descItem) => descItem.title === titleItem.title
+        );
         return {
           projectId: titleItem.projectId,
           url: titleItem.url,
           title: titleItem.title,
           titleId: titleItem.id,
           descId: matchingDescription ? matchingDescription.id : null,
-          description: matchingDescription ? matchingDescription.description : ""
+          description: matchingDescription
+            ? matchingDescription.description
+            : "",
         };
       });
       setGeneratedContent(generatedContent);
@@ -43,7 +54,6 @@ export default function ProductDetail() {
       setLoading(false);
     }
   };
-  
 
   useEffect(() => {
     if (!project) {
@@ -55,19 +65,21 @@ export default function ProductDetail() {
   const handleGenerate = async () => {
     try {
       toast.loading("Generando...");
-      const promisesArray = generatedContent.filter((content) => !content.description).map((title) => {
-        const prompt = seoDescModel({
-          company: project?.company || "",
-          companyCountry: project?.companyCountry || "",
-          whatCompanyDo: project?.whatCompanyDo || "",
-          title: title.title,
-          example: {
-            title: project?.titleExample || "",
-            desc: project?.descExample || "",
-          },
+      const promisesArray = generatedContent
+        .filter((content) => !content.description)
+        .map((title) => {
+          const prompt = seoDescModel({
+            company: project?.company || "",
+            companyCountry: project?.companyCountry || "",
+            whatCompanyDo: project?.whatCompanyDo || "",
+            title: title.title,
+            example: {
+              title: project?.titleExample || "",
+              desc: project?.descExample || "",
+            },
+          });
+          return axios.get(`/api/gemini?prompt=${prompt}`);
         });
-        return axios.get(`/api/gemini?prompt=${prompt}`);
-      });
 
       const responses = await Promise.all(promisesArray);
       const generatedDescriptions = responses.map((response) => ({
@@ -75,7 +87,7 @@ export default function ProductDetail() {
         projectId: project?.id,
       }));
       await addMultipleDocumentsByCol("descriptions", generatedDescriptions);
-      await getGeneratedContent()
+      await getGeneratedContent();
       toast.dismiss();
       toast.success("Contenido generado!");
     } catch (error) {
@@ -93,9 +105,9 @@ export default function ProductDetail() {
           data={generatedContent.map((content) => ({
             key: content.id,
             content: [
-              <div>{content.url}</div>,
-              <div>{content.title}</div>,
-              <div>{content.description|| "-"}</div>,
+              <div key={content.id}>{content.url}</div>,
+              <div key={content.id}>{content.title}</div>,
+              <div key={content.id}>{content.description || "-"}</div>,
             ],
           }))}
           cols={["URL", "TITLE", "DESCRIPTION"]}

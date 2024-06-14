@@ -20,6 +20,7 @@ export function Header() {
           .filter((n) => (n.isProtected ? !!project : true))
           .map((n) => (
             <Link
+              key={n.label}
               className="text-sm font-medium hover:text-gray-900 "
               href={n.href}
             >

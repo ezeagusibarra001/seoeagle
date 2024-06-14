@@ -113,7 +113,11 @@ export default function ProductDetail() {
           cols={["URL", "TITLE", "DESCRIPTION"]}
           add={
             <button
-              className="flex items-center justify-center hover:animate-pulse gap-2 rounded-md px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
+              disabled={
+                generatedContent.filter((content) => !content.description)
+                  .length === 0
+              }
+              className="flex items-center justify-center hover:animate-pulse gap-2 rounded-md px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 disabled:from-gray-400 disabled:to-gray-500"
               onClick={handleGenerate}
             >
               <p className="text-white">Generate all</p>

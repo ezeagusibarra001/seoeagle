@@ -46,30 +46,17 @@ export function Header() {
           </SheetTrigger>
           <SheetContent className="sm:hidden" side="right">
             <div className="grid gap-4 p-4">
-              <Link
-                className="text-sm font-medium hover:text-gray-900 "
-                href="#"
-              >
-                Home
-              </Link>
-              <Link
-                className="text-sm font-medium hover:text-gray-900 "
-                href="#"
-              >
-                About
-              </Link>
-              <Link
-                className="text-sm font-medium hover:text-gray-900 "
-                href="#"
-              >
-                Features
-              </Link>
-              <Link
-                className="text-sm font-medium hover:text-gray-900 "
-                href="#"
-              >
-                Contact
-              </Link>
+              {navigation
+                .filter((n) => (n.isProtected ? !!project : true))
+                .map((n) => (
+                  <Link
+                    key={n.label}
+                    className="text-sm font-medium hover:text-gray-900 "
+                    href={n.href}
+                  >
+                    {n.label}
+                  </Link>
+                ))}
             </div>
           </SheetContent>
         </Sheet>

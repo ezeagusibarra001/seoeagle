@@ -6,6 +6,9 @@ export default function Home() {
   const { projects, setProject, project } = useApp();
   const router = useRouter();
 
+
+
+  //fix
   const handleNewProject = () => {
     setProject(null);
     router.push("/settings");
